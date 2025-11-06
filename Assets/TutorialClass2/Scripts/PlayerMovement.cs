@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     public float turnSpeed = 20f;
     public float knockbackForce = 10f;//受击力度 
     public float knockbackDuration = 0.5f;// 受击硬直时间
+    public float groundCheckRadius = 0.1f; // 地面检测半径
+    public LayerMask groundLayer; // 地面层
 
     // 每个玩家实例化时设置自己的输入轴名称
     public string horizontalAxis = "Horizontal";
@@ -39,16 +41,45 @@ public class PlayerMovement : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
         if (playerManager == null)
         {
-            // 可选：Debug.LogWarning($"{gameObject.name} 没有 PlayerManager，无法检测死亡状态。");
+            Debug.LogWarning($"{gameObject.name} 没有 PlayerManager，无法检测死亡状态。");
         }
 
-        // 订阅死亡事件
+        // 延迟0.5秒后开始检测地面，确保场景完全加载
+        StartCoroutine(EnableGroundCheck());
+    }
+
+    private bool enableGroundCheck = false;
+
+    private IEnumerator EnableGroundCheck()
+    {
+        yield return new WaitForSeconds(0.5f);
+        enableGroundCheck = true;
+    }
+
+    private bool IsGrounded()
+    {
+        // 从玩家位置向下发射射线检测地面
+        RaycastHit hit;
+        Vector3 rayStart = transform.position + Vector3.up * 0.1f; // 从稍微高一点的位置开始检测
+        if (Physics.Raycast(rayStart, Vector3.down, out hit, 0.3f))
+        {
+            // 检测到任何碰撞体都认为是地面
+            return true;
+        }
+        return false;
     }
 
     void FixedUpdate()
     {
         if (isInputBlocked)
         {
+            return;
+        }
+
+        // 只有在启用地面检测后才进行检查
+        if (enableGroundCheck && !IsGrounded() && !playerManager.isDead)
+        {
+            playerManager.Dead();
             return;
         }
 

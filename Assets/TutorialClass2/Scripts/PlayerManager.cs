@@ -23,6 +23,20 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // 检查是否按下 ESC 键
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            // 退出游戏
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #else
+                Application.Quit();
+            #endif
+        }
+    }
+
     // 角色受伤方法，传递参数为伤害值
     public void TakeDamage(int damage, Vector3 knockbackDirection)
     {
