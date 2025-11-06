@@ -758,8 +758,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1485322647843525967, guid: 6ca4fb865b7054602947492320b8b7c7, type: 3}
   m_PrefabInstance: {fileID: 2078923736}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-=======
 --- !u!1 &1179909770
 GameObject:
 >>>>>>> origin/main
@@ -767,7 +765,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 =======
   serializedVersion: 6
   m_Component:
